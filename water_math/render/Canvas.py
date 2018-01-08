@@ -5,23 +5,22 @@ from vispy import gloo
 from vispy import io
 
 import shaders
-from surface.Bed import Bed
-from surface.Sun import Sun
 
-from render.methods.runge_kutta import RungeKutta
-from render.methods.euler import Euler
-from render.methods.verlet import Verlet
+
+from water_math.render.methods.runge_kutta import RungeKutta
+from water_math.surface.Bed import Bed
+from water_math.surface.Sun import Sun
 
 
 class Canvas(app.Canvas):
 
-    def __init__(self, surface, sky="img\clouds.png", bed="img\seabed.png", size=(600, 600)):
+    def __init__(self, surface, sky="img/clouds.png", bed="img/seabed.png", size=(600, 600)):
         # app window dimensions
         self.width = size[0]
         self.height = size[1]
 
         # set method - delta is 1. Parametrize just v and sigma
-        self.resolver = RungeKutta(method="bubble", is_shallow=False, borders=True)
+        self.resolver = RungeKutta(method="vertical", is_shallow=True, borders=False)
 
         # initial time to count heights of points
         self.time = 0
@@ -42,7 +41,7 @@ class Canvas(app.Canvas):
         self.program['a_position'] = position
         self.program['u_sky_texture'] = gloo.Texture2D(self.sky, wrapping='repeat', interpolation='linear')
         self.program['u_bed_texture'] = gloo.Texture2D(self.bed, wrapping='repeat', interpolation='linear')
-        self.program['u_eye_height'] = 3
+        self.program['u_eye_height'] = 1
         self.program['u_alpha'] = 0.9
     #    self.program['u_bed_depth'] = 1
         self.program["a_bed_depth"] = self.bed_resolver.bed_depths("beach")
@@ -52,7 +51,7 @@ class Canvas(app.Canvas):
 
         self.program_point = gloo.Program(shaders.vert_shader, shaders.frag_shader_point)
         self.program_point['a_position'] = position
-        self.program_point['u_eye_height'] = 3
+        self.program_point['u_eye_height'] = 1
 
         # GUI set up
         self.camera = np.array([0, 0, 1])
@@ -200,8 +199,7 @@ class Canvas(app.Canvas):
             if self.program['u_eye_height'] > 0.5:
                 self.program['u_eye_height'] -= event.delta[1] * 0.2
         else:
-            if self.program['u_eye_height'] < 5:
-                self.program['u_eye_height'] -= event.delta[1] * 0.2
+            self.program['u_eye_height'] -= event.delta[1] * 0.2
 
     def screen_to_gl_coordinates(self, pos):
         return 2 * np.array(pos) / np.array(self.size) - 1

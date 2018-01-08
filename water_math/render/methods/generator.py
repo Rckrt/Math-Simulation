@@ -44,3 +44,8 @@ class HeightsGenerator:
                 R = self.size[0] // 2
                 h[i][j] = min_height * (np.cos(np.pi * r / R) + 1) + (max_height - min_height)
         return h
+
+    def shallow(self, params):
+        min_height = params["min_height"]
+        max_height = params["max_height"]
+        return np.float32(np.add(np.full(self.size, max_height),  -np.random.randint(0, 2, self.size) * min_height))

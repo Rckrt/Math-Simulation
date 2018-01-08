@@ -1,7 +1,7 @@
 
 import numpy as np
-from surface import CircularWave
-from surface import Surface
+from water_math.surface import CircularWave
+from water_math.surface import Surface
 
 
 class CircularWavesSurface(Surface.Surface):

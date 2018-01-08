@@ -1,6 +1,6 @@
 import numpy as np
 
-from surface import Wave
+from water_math.surface import Wave
 
 
 class Surface(object):

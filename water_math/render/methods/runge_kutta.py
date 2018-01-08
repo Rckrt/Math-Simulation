@@ -1,22 +1,23 @@
-from render.methods.base import Base
 import numpy as np
+
+from water_math.render.methods.base import Base
 
 
 class RungeKutta(Base):
 
-    def __init__(self, method, v=100, delta=1, sigma=0.1, size=(50, 50), max_height=0.4, min_height=0.2, borders=False, is_shallow=False):
+    def __init__(self, method, v=0.0005, delta=1.05, sigma=3.69, size=(50, 50), max_height=0.0004, min_height=0.0001, borders=False, is_shallow=False):
         super().__init__(method, v, delta, sigma, size, max_height, min_height, borders, is_shallow)
 
     # y(x+h) = y(x) + h/6 * (k1+2k2+2k3+k4)
     # x is vector [h(t), v(t)]
     def runge_kutta(self, f, x, h):
-        k_1 = self.k1(f, x, h)
+        k_1 = self.k1(f, x)
         k_2 = self.k2(f, x, h, k_1)
         k_3 = self.k3(f, x, h, k_2)
         k_4 = self.k4(f, x, h, k_3)
         return x + (h / 6) * (k_1 + 2 * k_2 + 2 * k_3 + k_4)
 
-    def k1(self, f, x, h):
+    def k1(self, f, x):
         return f(x)
 
     def k2(self, f, x, h, k_1):

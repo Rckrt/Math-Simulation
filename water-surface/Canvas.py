@@ -11,7 +11,7 @@ from surface.Bed import Bed
 
 class Canvas(app.Canvas):
 
-    def __init__(self, surface, sky="img\clouds.png", bed="img\seabed.png", size=(600, 600)):
+    def __init__(self, surface, sky="img/clouds.png", bed="img/seabed.png", size=(600, 600)):
         # app window dimensions
         self.width = size[0]
         self.height = size[1]

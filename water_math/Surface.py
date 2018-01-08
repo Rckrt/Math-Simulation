@@ -1,11 +1,11 @@
 import numpy as np
 
-from surface import Wave
+from water_math import Wave
 
 
 class Surface(object):
 
-    def __init__(self, size=(100, 100, 2), nwave=5, max_height=0.2):
+    def __init__(self, size=(50, 50, 2), nwave=5, max_height=0.2):
         assert isinstance(size, tuple)
 
         self.size = size
